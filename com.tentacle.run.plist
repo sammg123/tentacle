@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd agent that keeps the TENTACLE trading loop alive.
+
+  Install:
+    cp com.tentacle.run.plist ~/Library/LaunchAgents/
+    launchctl load   ~/Library/LaunchAgents/com.tentacle.run.plist
+  Stop / remove:
+    launchctl unload ~/Library/LaunchAgents/com.tentacle.run.plist
+  Logs: data/tentacle.out and data/tentacle.err in the repo.
+
+  KeepAlive restarts the loop if it ever exits. The loop is safe by default
+  (unarmed, rung 0 = $0), so it only shadow-logs until you arm and graduate it.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.tentacle.run</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/samgoldfeder/tentacle/run.sh</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/samgoldfeder/tentacle</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/samgoldfeder/tentacle/data/tentacle.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/samgoldfeder/tentacle/data/tentacle.err</string>
+</dict>
+</plist>

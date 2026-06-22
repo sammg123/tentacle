@@ -1,0 +1,15 @@
+.venv
+.git
+.gitignore
+data
+__pycache__
+**/__pycache__
+*.pyc
+.env
+*.db
+*.db-journal
+*.log
+run.sh
+mother.sh
+*.plist
+DEPLOY.md

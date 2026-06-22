@@ -1,0 +1,14 @@
+# Core (required). The whole engine runs on these.
+requests
+feedparser
+python-dateutil
+pandas
+numpy
+yfinance
+lxml          # yfinance needs it to read earnings dates (used by the backtest PEAD study)
+
+# Optional. Each only lights up one extra tentacle / feature; everything else
+# works without them. The Claude analyst uses the REST API via requests, so the
+# anthropic SDK is NOT required.
+# pytrends        # google_trends tentacle
+# praw            # nicer Reddit access (reddit tentacle works on public JSON without it)

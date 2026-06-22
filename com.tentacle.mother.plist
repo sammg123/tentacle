@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd agent that runs the Mother once a week (Sunday 18:00 local).
+
+  Install:
+    cp com.tentacle.mother.plist ~/Library/LaunchAgents/
+    launchctl load   ~/Library/LaunchAgents/com.tentacle.mother.plist
+  Stop / remove:
+    launchctl unload ~/Library/LaunchAgents/com.tentacle.mother.plist
+  Logs: data/mother.out and data/mother.err in the repo.
+
+  Weekly cadence keeps the blind LLM review cheap. The financial guardian (Eye 2)
+  already runs cheaply every cycle inside the loop; this is the heavier coaching pass.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.tentacle.mother</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/samgoldfeder/tentacle/mother.sh</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/samgoldfeder/tentacle</string>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>0</integer>
+        <key>Hour</key>
+        <integer>18</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/samgoldfeder/tentacle/data/mother.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/samgoldfeder/tentacle/data/mother.err</string>
+</dict>
+</plist>
