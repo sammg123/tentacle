@@ -186,3 +186,25 @@ def run_mother(storage=None, cfg=None, md=None, notify=None,
   KeepAlive), logging to `data/tentacle.out`/`data/tentacle.err`. Include a short
   comment block explaining `launchctl load` and the weekly `mother.sh` via cron/calendar.
 ```
+
+## The Bloomberg terminal (awareness, NOT a judging input)
+
+A separate read-only Bloomberg-style terminal (`bloomberg-terminal`, http://localhost:3001) mirrors
+the kid's Alpaca PAPER account (`PA3ENGT4GREF`, shown as account **TENTACLE**) next to other
+strategies. It is a passive mirror: it reads the account and displays it, and never trades or talks
+back to the bot. It shows the kid's live balance, positions, queued/open orders, and a leaderboard
+that ranks accounts by return (1D/7D/30D ROI). F-keys: F1 Summary (leaderboard), F2 Market Data,
+F3 Markets, F4 Equity, F5 News, F6 Portfolio (holdings + QUEUED orders), F7 Help, F8 Search,
+F9 Msgs, F10 Calc, F11 Menu, F12 Trade. Full integration: `TERMINAL.md`.
+
+**One hard rule, because it touches your core discipline:** your process review stays **blind to
+outcomes**. The terminal is an outcome surface (it is all P&L, ROI, and leaderboard rank). Never use
+the terminal's P&L, return, rank, or any realized result to judge the kid or to write a lesson. That
+is exactly the outcome bias `review.py` forbids. The terminal exists for the human operator to watch;
+it is not an input to your coaching. You still grade only the QUALITY of the kid's reasoning at
+decision time.
+
+Note: the kid's decisions (BUY/PASS + conviction + thesis) and trades ARE mirrored to the terminal
+(`tentacle/mirror.py` -> prefixed `tentacle_*` Supabase tables -> F9 MSGS and the blotter). That is a
+read-only display for the human operator. It changes nothing for you: you still review the kid's
+reasoning at decision time, blind to outcomes, and the terminal's P&L is off-limits as a judging input.

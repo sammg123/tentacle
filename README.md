@@ -12,7 +12,9 @@ confidence gate ARE the strategy.
 
 > This README and the code are the single source of truth. When they disagree
 > with anything, the code is what runs. The design document this was built from
-> lives in `CONTRACTS.md` (the module API spec).
+> lives in `CONTRACTS.md` (the module API spec). The bot's Alpaca paper account is
+> also mirrored on a read-only Bloomberg-style terminal; that integration (and what
+> the kid/mother know about it) is documented in `TERMINAL.md`.
 
 ---
 

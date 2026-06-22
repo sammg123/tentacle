@@ -279,6 +279,12 @@ class Integrations:
     # these are passed as --model; they are also the API fallback model IDs.
     kid_model: str = _s("TENTACLE_KID_MODEL", "claude-sonnet-4-6")
     mother_model: str = _s("TENTACLE_MOTHER_MODEL", "claude-opus-4-8")
+    # Optional Supabase mirror, so the bot's decisions/trades surface on the Bloomberg terminal
+    # (see TERMINAL.md). Off unless both url + key are present. Writes go to PREFIXED tables
+    # (default tentacle_*) so they never collide with another bot sharing the same project.
+    supabase_url: str = _s("SUPABASE_URL", "")
+    supabase_key: str = _s("SUPABASE_SERVICE_ROLE_KEY", "") or _s("SUPABASE_SERVICE_KEY", "")
+    supabase_prefix: str = _s("TENTACLE_SUPABASE_PREFIX", "tentacle_")
 
     @property
     def alpaca_data_base(self) -> str:

@@ -21,6 +21,7 @@ from typing import Optional
 
 from ..config import get_config, size_fraction_for
 from ..models import AccountState, Candidate, DecisionType
+from ..terminal import TERMINAL_AWARENESS
 from ..util import age_seconds, get_logger
 from .confirmation import passes_confirmation_gate
 from .llm import claude_available, claude_complete
@@ -65,6 +66,11 @@ _SYSTEM = (
     '[{"id": <int>, "decision": "buy"|"pass", "conviction": <int 0-100>, '
     '"thesis": "<one short line>"}]'
 )
+
+# Static terminal awareness (see TERMINAL.md). Context only: it never changes the BUY/PASS
+# logic and explicitly tells the kid not to chase leaderboard rank. The mother coaches the kid
+# by appending lessons AFTER this, via policy.effective_system_prompt.
+_SYSTEM = _SYSTEM + "\n\n" + TERMINAL_AWARENESS
 
 
 def decide_candidates(cands: list[Candidate], cfg=None, md=None, storage=None,

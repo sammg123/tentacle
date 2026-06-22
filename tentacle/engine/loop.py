@@ -225,6 +225,15 @@ class Engine:
         self.storage.append_ledger(acct.rung, acct.equity, acct.cash, acct.settled_cash,
                                    acct.unsettled_cash, self.state.realized_today, "cycle")
         self.state.tick_cycle()
+
+        # 11. optional Supabase mirror (decisions/trades -> Bloomberg terminal). No-op without
+        # creds; fully guarded so it can never break the loop. See tentacle/mirror.py.
+        try:
+            from ..mirror import sync as _mirror_sync
+            _mirror_sync(self.storage, self.cfg)
+        except Exception as exc:  # noqa: BLE001
+            log.debug("mirror sync failed: %s", exc)
+
         return summary
 
     # ------------------------------------------------------------------ decide one
