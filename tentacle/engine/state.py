@@ -45,6 +45,8 @@ K_LAST_CYCLE = "eng.last_cycle"
 K_CYCLES = "eng.cycles"
 K_BACKTEST_PASSED = "eng.backtest_passed"
 
+_FULL_RUNG = 4   # the top ladder rung (capital = STARTING_CAPITAL); used when the ladder is OFF
+
 
 class EngineState:
     def __init__(self, storage: Optional[Storage] = None, cfg: Optional[Config] = None):
@@ -54,6 +56,16 @@ class EngineState:
     # ------------------------------------------------------------------ bootstrap
     def bootstrap(self, start_rung: int = 0) -> None:
         """Initialize defaults the first time, idempotently."""
+        if self.cfg.engine.no_ladder:
+            # Ladder OFF: pin to the full rung (STARTING_CAPITAL). Once, when no-ladder is first
+            # enabled, re-seed cash to the full capital and arm per config so the bot trades the
+            # whole paper account immediately (no earn-your-allowance, no death halt).
+            start_rung = _FULL_RUNG
+            if not self.storage.kv_get("eng.no_ladder_seeded"):
+                self.set_rung(_FULL_RUNG, reset_stage=True)
+                self.storage.kv_set(K_ALIVE, True)
+                self.storage.kv_set(K_ARMED, bool(self.cfg.engine.armed))
+                self.storage.kv_set("eng.no_ladder_seeded", True)
         if self.storage.kv_get(K_RUNG) is None:
             self.set_rung(start_rung, reset_stage=True)
         if self.storage.kv_get(K_ALIVE) is None:

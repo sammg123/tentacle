@@ -211,6 +211,10 @@ class EngineConfig:
     cycle_seconds_market_closed: int = _i("CYCLE_SECONDS_CLOSED", 900)
     max_candidates_to_judge: int = _i("MAX_JUDGE_CANDIDATES", 3)
     armed: bool = _b("TENTACLE_ARMED", False)   # operator must explicitly ARM
+    # When True, the capital ladder is OFF: the bot is pinned to the full rung (STARTING_CAPITAL,
+    # e.g. $100k) and there is no earn-your-allowance, no promote/demote, and no ruin-death halt.
+    # It just paper-trades the full account until told otherwise.
+    no_ladder: bool = _b("TENTACLE_NO_LADDER", False)
     db_path: str = _s("TENTACLE_DB", os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "tentacle.db"))
 

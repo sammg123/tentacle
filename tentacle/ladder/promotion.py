@@ -37,6 +37,12 @@ def evaluate_ladder(storage, cfg: Optional[Config] = None, md=None) -> dict:
     """
     cfg = cfg or get_config()
 
+    if getattr(cfg.engine, "no_ladder", False):
+        # Ladder disabled: never promote, demote, or die. Fixed full-capital paper trading.
+        lvl = _as_int(storage.kv_get("rung", 4), 4)
+        return {"rung": lvl, "mastery": 0.0, "samples": 0, "action": "hold",
+                "new_rung": lvl, "note": "ladder disabled (TENTACLE_NO_LADDER)"}
+
     try:
         cur_level = _as_int(storage.kv_get("rung", -1), -1)
     except Exception as exc:  # noqa: BLE001
