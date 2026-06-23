@@ -141,6 +141,19 @@ def sync(storage: Optional[Storage] = None, cfg: Optional[Config] = None) -> Non
         rows = {t.get("id"): _trade_row(t) for t in trades if t.get("id")}
         _upsert(url, key, f"{prefix}executions", list(rows.values()), "trade_id")
 
+        # the mother's coaching: push the current champion policy lessons for the MOTHER tab
+        try:
+            from .policy import get_champion_policy
+            pol = get_champion_policy(storage)
+            _upsert(url, key, f"{prefix}mother", [{
+                "id": "current", "ts": now_iso(),
+                "policy_version": int(pol.get("version", 1) or 1),
+                "lessons": list(pol.get("lessons") or []),
+                "changelog": pol.get("changelog") or "",
+            }], "id")
+        except Exception as exc:  # noqa: BLE001
+            log.debug("mirror mother-policy push failed: %s", exc)
+
         _maybe_prune(storage, url, key, prefix)
     except Exception as exc:  # noqa: BLE001 (a mirror failure must never break the loop)
         log.debug("supabase mirror sync failed: %s", exc)
